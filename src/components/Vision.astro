@@ -1,0 +1,22 @@
+---
+import { content } from '../data/content';
+
+const { vision } = content;
+---
+
+<!-- ============================ VISION ============================ -->
+<section class="sec vision" id="vision" data-screen-label="Vision">
+  <canvas id="vision-mesh" aria-hidden="true"></canvas>
+  <div class="vision-grad"></div>
+  <div class="shell">
+    <div class="vision-grid">
+      <div class="r">
+        <span class="eyebrow on-dark">{vision.eyebrow}</span>
+        <h2>{vision.titleStart} <em>{vision.titleEmphasis}</em></h2>
+      </div>
+      <div class="r s2">
+        <p>{vision.text}</p>
+      </div>
+    </div>
+  </div>
+</section>

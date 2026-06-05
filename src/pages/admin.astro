@@ -1,0 +1,145 @@
+---
+import '../styles/styles.css';
+import '../styles/admin.css';
+import { content } from '../data/content';
+import { ADMIN_STATUSES, type ContactRequest } from '../lib/admin';
+import { getVerifiedUser } from '../lib/supabaseServer';
+
+export const prerender = false;
+
+Astro.response.headers.set('Cache-Control', 'private, no-store');
+
+const { supabase, user } = await getVerifiedUser(Astro);
+let requests: ContactRequest[] = [];
+let dashboardError = '';
+
+if (user) {
+  const { data, error } = await supabase
+    .from('contact_requests')
+    .select('id,created_at,nom,societe,email,telephone,message,status,ip,user_agent')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Admin contact_requests select failed:', {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
+    dashboardError = 'Impossible de charger les demandes.';
+  } else {
+    requests = (data ?? []) as ContactRequest[];
+  }
+}
+
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
+
+const statusLabels: Record<(typeof ADMIN_STATUSES)[number], string> = {
+  new: 'Nouveau',
+  contacted: 'Contacté',
+  archived: 'Archivé',
+};
+const { brand } = content;
+
+function formatDate(value: string) {
+  return dateFormatter.format(new Date(value));
+}
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Administration OmniTel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    {!user ? (
+      <section class="admin-login" aria-labelledby="admin-login-title">
+        <div class="admin-brand">
+          <img class="admin-logo-image" src={brand.logoSrc} width={brand.logoWidth} height={brand.logoHeight} alt="OmniTel" decoding="async" />
+        </div>
+        <h1 id="admin-login-title">Administration</h1>
+        <form id="adminLoginForm" class="admin-form" novalidate>
+          <div class="admin-field">
+            <label for="admin-email">Email</label>
+            <input id="admin-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="admin-field">
+            <label for="admin-password">Mot de passe</label>
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="admin-button">Se connecter</button>
+          <p class="admin-error" id="adminLoginError" role="alert" hidden></p>
+        </form>
+      </section>
+    ) : (
+      <section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
+        <header class="admin-top">
+          <div>
+            <div class="admin-brand compact">
+              <img class="admin-logo-image" src={brand.logoSrc} width={brand.logoWidth} height={brand.logoHeight} alt="OmniTel" decoding="async" />
+            </div>
+            <h1 id="admin-dashboard-title">Demandes de contact</h1>
+            <p>{requests.length} demande{requests.length > 1 ? 's' : ''}</p>
+          </div>
+          <button type="button" class="admin-button secondary" id="adminLogout">Déconnexion</button>
+        </header>
+
+        {dashboardError ? <p class="admin-error visible">{dashboardError}</p> : null}
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Nom</th>
+                <th>Société</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Message</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.length === 0 ? (
+                <tr>
+                  <td colspan="7" class="admin-empty">Aucune demande pour le moment.</td>
+                </tr>
+              ) : requests.map((request) => (
+                <tr data-request-id={request.id}>
+                  <td>
+                    <time datetime={request.created_at}>{formatDate(request.created_at)}</time>
+                  </td>
+                  <td>{request.nom}</td>
+                  <td>{request.societe || '-'}</td>
+                  <td><a href={`mailto:${request.email}`}>{request.email}</a></td>
+                  <td>{request.telephone ? <a href={`tel:${request.telephone}`}>{request.telephone}</a> : '-'}</td>
+                  <td class="message-cell">{request.message}</td>
+                  <td>
+                    <select class="status-select" name="status" aria-label={`Statut de ${request.nom}`}>
+                      {ADMIN_STATUSES.map((status) => (
+                        <option value={status} selected={request.status === status}>{statusLabels[status]}</option>
+                      ))}
+                    </select>
+                    <span class="status-feedback" aria-live="polite"></span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+  </main>
+  <script is:inline src="/admin.js"></script>
+</body>
+</html>

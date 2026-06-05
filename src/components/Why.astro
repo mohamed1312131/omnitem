@@ -1,0 +1,32 @@
+---
+import { content } from '../data/content';
+
+const { why } = content;
+---
+
+<!-- ============================ WHY ============================ -->
+<section class="sec why" id="why" data-screen-label="Pourquoi OmniTel">
+  <div class="shell">
+    <div class="why-grid">
+      <div class="r">
+        <span class="section-num">{why.sectionNum}</span>
+        <h2 class="h2" style="margin-top:18px">{why.title}</h2>
+        <p class="lead" style="margin-top:22px">{why.lead}</p>
+        <div class="stat-strip">
+          <div class="stat-cell"><div class="n">{why.stats[0].number}<span>{why.stats[0].symbol}</span></div><div class="l">{why.stats[0].label}</div></div>
+          <div class="stat-cell"><div class="n">{why.stats[1].number}<span>{why.stats[1].symbol}</span>{why.stats[1].number2}<span>{why.stats[1].symbol2}</span>{why.stats[1].number3}</div><div class="l">{why.stats[1].label}</div></div>
+          <div class="stat-cell"><div class="n">{why.stats[2].number}<span>{why.stats[2].symbol}</span></div><div class="l">{why.stats[2].label}</div></div>
+          <div class="stat-cell"><div class="n">{why.stats[3].number}</div><div class="l">{why.stats[3].label}</div></div>
+        </div>
+      </div>
+      <div class="why-features">
+        {why.features.map((feature) => (
+          <div class={`why-feat r ${feature.className}`}>
+            <svg class="tick" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><h3>{feature.title}</h3><p>{feature.text}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

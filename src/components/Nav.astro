@@ -1,0 +1,29 @@
+---
+import { content } from '../data/content';
+
+const { brand, nav } = content;
+---
+
+<!-- ============================ NAV ============================ -->
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="logo" href="#top" aria-label={brand.homeLabel}>
+      <img class="logo-image" src={brand.logoSrc} width={brand.logoWidth} height={brand.logoHeight} alt="" decoding="async" />
+    </a>
+
+    <nav class="nav-links" aria-label="Navigation principale">
+      {nav.links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#contact" class="nav-contact">{nav.contact}</a>
+    </div>
+
+    <button class="nav-burger" id="burger" aria-label={nav.menuLabel} aria-expanded="false"><span></span></button>
+
+    <div class="mobile-menu" id="mobileMenu">
+      {nav.links.map((link) => <a href={link.href}>{link.label}</a>)}
+      <a href="#contact" class="btn btn-primary">{nav.contact}</a>
+    </div>
+  </div>
+</header>

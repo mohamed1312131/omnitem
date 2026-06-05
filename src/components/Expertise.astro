@@ -1,0 +1,27 @@
+---
+import { content } from '../data/content';
+
+const { expertise } = content;
+---
+
+<!-- ============================ ABOUT / EXPERTISE ============================ -->
+<section class="sec about" id="expertise" data-screen-label="Expertise">
+  <div class="shell">
+    <div class="about-grid">
+      <div class="about-intro r">
+        <span class="section-num">{expertise.sectionNum}</span>
+        <h2 class="h2" style="margin-top:18px">{expertise.title}</h2>
+        <p style="margin-top:24px">{expertise.paragraphs[0]}</p>
+        <p>{expertise.paragraphs[1]}</p>
+      </div>
+      <div class="dlist">
+        {expertise.rows.map((row) => (
+          <div class={`drow r ${row.className}`}>
+            <div class="code">{row.code}<small>{row.codeLabel}</small></div>
+            <div><h3>{row.title}</h3><p>{row.text}</p></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

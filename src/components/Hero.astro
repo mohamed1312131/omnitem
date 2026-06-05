@@ -1,0 +1,30 @@
+---
+import { content } from '../data/content';
+
+const { hero } = content;
+---
+
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="hero" data-screen-label="Hero">
+  <canvas id="fiber-bg" aria-hidden="true"></canvas>
+  <div class="hero-grad"></div>
+  <div class="shell">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <span class="eyebrow on-dark reveal-hero d1">{hero.eyebrow}</span>
+        <h1 class="reveal-hero d2">{hero.titleStart} <em>{hero.titleEmphasis}</em></h1>
+        <p class="hero-sub reveal-hero d3">{hero.subtitle}</p>
+        <div class="hero-cta reveal-hero d4">
+          <a href="#contact" class="btn btn-primary">{hero.primaryCta} <span class="arrow">→</span></a>
+          <a href="#contact" class="btn btn-ghost-dark">{hero.secondaryCta}</a>
+        </div>
+        <div class="hero-stats reveal-hero d5">
+          {hero.stats.map((stat) => <div class="stat"><div class="n">{stat.number}</div><div class="l">{stat.label}</div></div>)}
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg id="hero-net" viewBox="0 0 520 480" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </div>
+  </div>
+</section>

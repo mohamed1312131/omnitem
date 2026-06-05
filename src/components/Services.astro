@@ -1,0 +1,26 @@
+---
+import { content } from '../data/content';
+
+const { services } = content;
+---
+
+<!-- ============================ SERVICES ============================ -->
+<section class="sec services" id="services" data-screen-label="Services">
+  <div class="shell">
+    <div class="sec-head r">
+      <div class="row"><span class="section-num">{services.sectionNum}</span></div>
+      <h2 class="h2">{services.title}</h2>
+      <p class="lead">{services.lead}</p>
+    </div>
+    <div class="svc-grid">
+      {services.items.map((item) => (
+        <article class={`svc-card r ${item.className}`}>
+          <span class="svc-num">{item.num}</span>
+          <div class="svc-icon" data-ic={item.icon} aria-hidden="true"></div>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

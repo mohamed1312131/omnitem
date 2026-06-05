@@ -1,0 +1,50 @@
+---
+import '../styles/styles.css';
+import { seo, structuredData } from '../data/content';
+
+const {
+  title = seo.title,
+  description = seo.description,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script is:inline>document.documentElement.className += " js";</script>
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="canonical" href={seo.canonical} />
+<!-- Future hreflang hooks:
+<link rel="alternate" hreflang="fr" href="https://www.omnitel.fr/" />
+<link rel="alternate" hreflang="ar" href="https://www.omnitel.fr/ar/" />
+<link rel="alternate" hreflang="en" href="https://www.omnitel.fr/en/" />
+-->
+<meta name="robots" content="index,follow" />
+<meta name="theme-color" content={seo.themeColor} />
+<meta property="og:type" content={seo.openGraph.type} />
+<meta property="og:site_name" content={seo.openGraph.siteName} />
+<meta property="og:locale" content={seo.openGraph.locale} />
+<meta property="og:title" content={seo.openGraph.title} />
+<meta property="og:description" content={seo.openGraph.description} />
+<meta property="og:url" content={seo.openGraph.url} />
+<meta property="og:image" content={seo.openGraph.image} />
+<meta name="twitter:card" content={seo.twitter.card} />
+<meta name="twitter:title" content={seo.twitter.title} />
+<meta name="twitter:description" content={seo.twitter.description} />
+<meta name="twitter:image" content={seo.twitter.image} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <slot />
+  <script is:inline src="/script.js?v=4"></script>
+</body>
+</html>
