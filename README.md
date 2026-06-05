@@ -15,7 +15,7 @@ Production Astro port of the approved OmniTel static design.
 - JSON-LD uses the provided `Organization` + `ProfessionalService` graph. No `LocalBusiness` or physical address is included until a real registered address exists.
 - Sitemap output is configured for `https://www.omnitel.fr`.
 - `public/robots.txt` allows public crawling, disallows `/admin`, and references the sitemap index.
-- `public/og-image.png` is a 1200×630 placeholder and should be replaced with the final supplied asset.
+- `public/og-image.png` is generated from the supplied OmniTel logo artwork.
 - French user-facing copy is centralized where practical in `src/data/content.ts` for a future i18n layer.
 
 ## Phase 3
@@ -39,6 +39,7 @@ Production Astro port of the approved OmniTel static design.
 npm install
 npm run dev
 npm run build
+npm run start
 npm run preview
 ```
 
@@ -46,7 +47,7 @@ For the standalone Node server build:
 
 ```bash
 npm run build
-node dist/server/entry.mjs
+npm run start
 ```
 
 ## Environment
